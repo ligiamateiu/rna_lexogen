@@ -1,0 +1,27 @@
+import pandas as pd
+import numpy as np
+
+configfile: "configs/config_main.yaml"
+
+input_path = config["FINALOUTPUT"] + "/countFile"
+output_path = config["FINALOUTPUT"] + "/dea"
+samples = pd.read_csv(config["METAFILE"], sep = '\t', header = 0)['sample']
+end = config["END"]
+
+rule end:
+    input:
+        norm = output_path + "/" + "library_normalized_gene_counts.tsv",
+        clustplot=output_path + "/plots/" + "SamplesDist_Euclidean.png",
+        pcaplot=output_path + "/plots/" + "Cond-PC1-PC2_top1000.png"
+
+rule DEA:
+    input:
+        featureCount = expand(input_path + "/{sample}_count.tsv", sample = samples)
+    output:
+        norm = output_path + "/" + "library_normalized_gene_counts.tsv",
+        clustplot=output_path + "/plots/" + "SamplesDist_Euclidean.png",
+        pcaplot=output_path + "/plots/" + "Cond-PC1-PC2_top1000.png"
+    shell:
+        """
+        {config[TOOLSPATH]}/R CMD BATCH scripts/dea.R
+        """

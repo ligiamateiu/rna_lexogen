@@ -1,0 +1,54 @@
+import pandas as pd
+configfile: "configs/config_main.yaml"
+
+input_path = config["READSPATH"]
+samples = pd.read_csv(config["METAFILE"], sep = '\t', header = 0)['sample']
+end = config["END"]
+intermediate_path = config["OUTPUTPATH"] + "/trim"
+pathin = config["OUTPUTPATH"]
+final_path = config["FINALOUTPUT"]
+adapter_files=config["ADAPTERFILE"]
+
+
+rule end:
+    input:
+        report = final_path + "/fastQC_after_trimming/report_quality_control_after_trimming.html"
+         
+rule trim:
+    input:
+        read1 = pathin + "/reads/{sample}_read1.fastq.gz"
+    output:
+        trim_read1 = intermediate_path + "/{sample}_trimmed.fq.gz",
+        stats_trim_read1 = final_path + "/fastQC_after_trimming/{sample}_bbduk.contaminants.txt"
+    params:
+        outputpath = intermediate_path
+    threads:
+        4
+    shell:
+       """
+       zcat {input.read1} | {config[TOOLSPATH]}/bbduk.sh in=stdin.fq out=stdout.fq ref={adapter_files}/polyA.fa,{adapter_files}/truseq.fa k=13 ktrim=r useshortkmers=t mink=5 qtrim=r trimq=10 minlength=20 int=f t={threads} ziplevel=9 stats={output.stats_trim_read1}  | gzip >{output.trim_read1}
+       """
+
+rule qualityControlPostTrimming:
+     input:
+         trim_read1 = intermediate_path + "/{sample}_trimmed.fq.gz"
+     output:
+         fastqc_trim_read1 = final_path + "/fastQC_after_trimming/{sample}_trimmed_fastqc.html"
+     params:
+         outputpath = final_path + "/fastQC_after_trimming"
+     shell:
+         """
+         {config[TOOLSPATH]}/fastqc -t {config[NCORE]} -o {params.outputpath} {input.trim_read1}
+         """
+
+rule summaryReportAfterTrimming:
+    input:
+        fastqc_trim_read1 = expand(final_path + "/fastQC_after_trimming/{sample}_trimmed_fastqc.html", sample = samples)
+    output:
+        report = final_path + "/fastQC_after_trimming/report_quality_control_after_trimming.html"
+    params:
+        path = final_path + "/fastQC_after_trimming"
+    shell:
+        """
+        {config[TOOLSPATH]}/multiqc {params.path} --filename {output.report}
+        """

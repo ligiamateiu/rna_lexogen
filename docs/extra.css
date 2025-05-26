@@ -1,0 +1,30 @@
+h1 {
+  color: red;
+}
+
+blockquote {
+    border-left: 5px solid #3498db; /* Blue vertical bar for all blockquotes */
+    padding: 10px 15px; /* Add padding inside the blockquote */
+    margin: 15px 0; /* Add spacing around the blockquote */
+    background-color: #f0f8ff; /* Light blue background */
+    color: #000; /* Black text */
+    font-weight: bold; /* Make all text inside bold */
+    font-style: normal; /* Remove italic styling */
+}
+
+/* Optional: styles for specific blockquote types */
+blockquote.note {
+    border-left: 5px solid #3498db; /* Blue for notes */
+    background-color: #eaf4fc; /* Light blue */
+}
+
+blockquote.warning {
+	border-left: 5px solid #e74c3c; /* Red vertical bar */
+    background-color: #fdecea !important; /* Light red background */
+    color: #a94442; /* Dark red text */
+}
+
+blockquote.tip {
+    border-left: 5px solid #2ecc71; /* Green for tips */
+    background-color: #eaf9f0; /* Light green */
+}

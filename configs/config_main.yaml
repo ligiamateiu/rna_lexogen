@@ -1,0 +1,75 @@
+# Please check the parameters, and adjust them according to your circumstance
+
+# Project name
+PROJECT: TestRNAseq
+
+## ================== Shared parameters for some or all of the sub-workflows ==================
+TOOLSPATH: /media/ligia/Mandalore/miniconda3_rna/bin
+
+## the path to fastq files
+READSPATH: /media/ligia/Mandalore/work/ligia/rna_lexogen/test_data
+
+## the meta file describing the experiment settings
+METAFILE: /media/ligia/Mandalore/work/ligia/rna_lexogen/configs/sampleinfo.tsv
+
+## is the sequencing single-end?
+END: single
+
+## number of cores you want to allocate to this workflow
+NCORE: 2  # Use the number of samples
+
+## paths for intermediate outputs and final outputs
+OUTPUTPATH: /media/ligia/Mandalore/work/test_quantseq/test_data/tmp #temporary output
+FINALOUTPUT: /media/ligia/Mandalore/work/test_quantseq/test_data/results
+
+
+# ================== Configuration for alignment to genome and feature count ==================
+
+## genome and annotation files
+READLENGTH: 150
+ORGANISM: Human
+GENOME: /media/ligia/Mandalore/refs/hg38/hg38v112/Homo_sapiens.GRCh38.dna.primary_assembly.fa
+ANNOTATION: /media/ligia/Mandalore/refs/hg38/hg38v112/Homo_sapiens.GRCh38.112.gtf
+GENOMEINDEX: /media/ligia/Mandalore/refs/hg38/hg38v112l150
+#generate index STAR --runMode genomeGenerate --genomeDir newindexfolder --genomeFastaFiles GENOME --sjdbGTFfile ANNOTATION --sjdbOverhang READLENGTH-1"
+ATTRIBUTE: gene_id  # the attribute used in annotation file. It's usually "gene_id", but double check that since it may also be "gene", "ID"...
+ADAPTERFILE: /media/ligia/Mandalore/software/miniconda3/envs/quantseq/opt/bbmap-39.01-1/resources
+### aligner
+#ALIGNER: star
+ORIENTATION: 1
+# -s 1, Quantseq
+
+
+# ================== Configuration for DEA ==================
+
+#covariate, max 2 allowed at the moment, "leave empty if NA eg. COVARIATE1: []    "
+COVARIATE1: []
+COVARIATE2: []
+
+## the comparison(s) you want to do. If multiple comparisons, specify each pair (CONTROL & TREAT) in order respectively
+CONTROL: ["control"]
+TREAT: ["patient"]
+## length of 'CONTROL' should agree with that of 'TREAT'
+## what you fill in there should agree with the "group" column in metadata.tsv
+
+
+### The threshold of FDR/adjusted P-value for significantly differentially expressed genes
+FDR: 0.05
+### The threshold of logFoldChange of significantly differentially expressed genes to be used in enrichGO
+FCTHR: 0.58
+###generate violin plots for all DEG or top 50
+PLOTALLDEG: ["TOP"] #TOP or YES
+
+##generate violin plot for the following genes ensembl ids ENS or NO
+PLOT_GENES: ["NO"]
+
+##PROTEIN_CODING_ONLY: ["YES"] the filtering step of the genes by "protein_coding" biotype in biomart
+PROTEIN_CODING_ONLY: ["YES"]
+
+#exclude genes from the DEA
+EXCLUDE_GENES_FROM_DEA: ["NO"]
+
+
+### in case of too large counts WT vs KO for a certain gene(s) rename dea folder and add the genes you want to exclude using their ensembl ID
+#EXCLUDE_GENES_FROM ANALYSIS: ["NO"] #No or give the list
+# ================== Configuration for visualization ==================

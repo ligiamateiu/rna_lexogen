@@ -1,0 +1,45 @@
+import pandas as pd
+configfile: "configs/config_main.yaml"
+
+input_path = config["READSPATH"]
+samples = pd.read_csv(config["METAFILE"], sep = '\t', header = 0)['sample']
+end = config["END"]
+intermediate_path = config["OUTPUTPATH"]
+final_path = config["FINALOUTPUT"]
+tools_path = config["TOOLSPATH"]
+
+rule end:
+    input:
+        report = final_path + "/fastQC/report_quality_control.html"
+        
+rule getReads:
+     output:
+         read1 = intermediate_path + "/reads/{sample}_read1.fastq.gz"
+     params:
+         input_path = input_path
+     shell:
+         """
+         cp -alf {params.input_path}/{wildcards.sample}*R1.fq.gz {output.read1}
+         """
+
+rule qualityControl:
+     input:
+         read1 = intermediate_path + "/reads/{sample}_read1.fastq.gz"
+     output:
+         fastqc_read1 = final_path + "/fastQC/{sample}_read1_fastqc.html"
+     params:
+         outputpath = final_path + "/fastQC"
+     shell:
+         """
+         {config[TOOLSPATH]}/fastqc -t {config[NCORE]} -o {params.outputpath} {input.read1}
+         """
+
+rule summaryReport:
+     input:
+         fastqc_read1 = expand(final_path + "/fastQC/{sample}_read1_fastqc.html", sample = samples)
+     output:
+         report = final_path + "/fastQC/report_quality_control.html"
+     params:
+         path = final_path + "/fastQC"
+     shell:
+            "{config[TOOLSPATH]}/multiqc {params.path} --filename {output.report}"
