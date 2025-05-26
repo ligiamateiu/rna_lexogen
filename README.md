@@ -1,26 +1,54 @@
-# RNA-Seq Data Analysis Pipeline
+# RNA Lexogen Analysis
 
-Welcome to the documentation for the RNAseq data analysis pipeline. The pipeline automates the processing of RNA sequencing data, starting from raw reads through to differential expression analysis (DEA).
+This repository contains scripts and tools for analyzing RNA sequencing data generated with Lexogen protocols.
 
-This documentation includes:
+## Table of Contents
+- [About](#about)
+- [Features](#features)
+- [Installation](#installation)
+- [Usage](#usage)
+- [Data](#data)
+- [Contributing](#contributing)
+- [License](#license)
+- [Contact](#contact)
 
-- An overview of the pipeline.
+## About
 
-- Step-by-step details of each workflow stage.
+The `rna_lexogen` project is focused on processing and analyzing RNA-seq data prepared using Lexogen library kits. This includes quality control, alignment, quantification, and downstream analysis tailored for Lexogen protocols.
 
-- A workflow diagram for better understanding.
+## Features
 
-## Usage
+- Preprocessing raw RNA-seq reads
+- Alignment to reference genomes
+- Transcript quantification
+- Quality control reports
+- Visualization scripts
 
-To run the pipeline, execute the `main.py` script on the login node (in screen) 
+## Installation
+
+1. Clone the repository:
+
+```bash
+   git clone https://github.com/ligiamateiu/rna_lexogen.git
+   cd rna_lexogen
+```
+
+2. Install required dependencies (preferably in a virtual environment):
+
+```bash 
+pip install -r requirements.txt
+```
+
+## Usage 
 
 ```bash
 python main.py
 ```
 
-The pipeline will load the configuration from `configs/config_main.yaml` that needs to be manually modified, execute the Snakemake workflows, and generate the output files and directories.
+### Test data 
 
- 
+4 fq.gz files in test_data
+
 ## Pipeline Overview
 
  ![Flowchart](docs/diagram_class.png) 
@@ -58,7 +86,7 @@ The pipeline is configured using YAML files located in the `configs/` directory:
 `ADAPTERFILE:` /opt/software/miniconda3/share/trimmomatic/adapters/TruSeq3-PE-2.fa <br>
 `ORIENTATION:` 0 <br>
 
-(# -s 0 unstranded, 2 RF/fr-firststrand stranded (dUTP), 1 FR/fr-secondstrand stranded (Ligation))
+(# -s 0 unstranded, 2 RF/fr-firststrand stranded (dUTP,Lexogen), 1 FR/fr-secondstrand stranded (Ligation))
 - example of `sampleinfo.tsv`
 
 ```

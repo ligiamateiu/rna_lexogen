@@ -36,8 +36,8 @@ ATTRIBUTE: gene_id  # the attribute used in annotation file. It's usually "gene_
 ADAPTERFILE: /media/ligia/Mandalore/software/miniconda3/envs/quantseq/opt/bbmap-39.01-1/resources
 ### aligner
 #ALIGNER: star
-ORIENTATION: 1
-# -s 1, Quantseq
+ORIENTATION: 2
+# -s 2, Quantseq
 
 
 # ================== Configuration for DEA ==================
