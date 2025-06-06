@@ -1,16 +1,16 @@
 # Please check the parameters, and adjust them according to your circumstance
 
 # Project name
-PROJECT: TestRNAseq
+PROJECT: TestRNAseqSE
 
 ## ================== Shared parameters for some or all of the sub-workflows ==================
-TOOLSPATH: /media/ligia/Mandalore/miniconda3_rna/bin
+TOOLSPATH: /miniconda3_rna/bin
 
 ## the path to fastq files
-READSPATH: /media/ligia/Mandalore/work/ligia/rna_lexogen/test_data
+READSPATH: /data/rna_se/test_data
 
 ## the meta file describing the experiment settings
-METAFILE: /media/ligia/Mandalore/work/ligia/rna_lexogen/configs/sampleinfo.tsv
+METAFILE: /data/test/rna_se/configs/sampleinfo.tsv
 
 ## is the sequencing single-end?
 END: single
@@ -19,8 +19,8 @@ END: single
 NCORE: 2  # Use the number of samples
 
 ## paths for intermediate outputs and final outputs
-OUTPUTPATH: /media/ligia/Mandalore/work/test_quantseq/test_data/tmp #temporary output
-FINALOUTPUT: /media/ligia/Mandalore/work/test_quantseq/test_data/results
+OUTPUTPATH: /work/test_out/tmp #temporary output
+FINALOUTPUT: /work/test_out/results
 
 
 # ================== Configuration for alignment to genome and feature count ==================
@@ -28,12 +28,12 @@ FINALOUTPUT: /media/ligia/Mandalore/work/test_quantseq/test_data/results
 ## genome and annotation files
 READLENGTH: 150
 ORGANISM: Human
-GENOME: /media/ligia/Mandalore/refs/hg38/hg38v112/Homo_sapiens.GRCh38.dna.primary_assembly.fa
-ANNOTATION: /media/ligia/Mandalore/refs/hg38/hg38v112/Homo_sapiens.GRCh38.112.gtf
-GENOMEINDEX: /media/ligia/Mandalore/refs/hg38/hg38v112l150
+GENOME: /refs/hg38/hg38v112/Homo_sapiens.GRCh38.dna.primary_assembly.fa
+ANNOTATION: /refs/hg38/hg38v112/Homo_sapiens.GRCh38.112.gtf
+GENOMEINDEX: /refs/hg38/hg38v112l150
 #generate index STAR --runMode genomeGenerate --genomeDir newindexfolder --genomeFastaFiles GENOME --sjdbGTFfile ANNOTATION --sjdbOverhang READLENGTH-1"
 ATTRIBUTE: gene_id  # the attribute used in annotation file. It's usually "gene_id", but double check that since it may also be "gene", "ID"...
-ADAPTERFILE: /media/ligia/Mandalore/software/miniconda3/envs/quantseq/opt/bbmap-39.01-1/resources
+ADAPTERFILE: /software/miniconda3/envs/quantseq/opt/bbmap-39.01-1/resources
 ### aligner
 #ALIGNER: star
 ORIENTATION: 2
