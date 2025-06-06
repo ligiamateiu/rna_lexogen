@@ -1,4 +1,4 @@
-# RNA Lexogen Analysis
+# RNA Single End (ie Lexogen) Analysis
 
 This repository contains scripts and tools for analyzing RNA sequencing data generated with Lexogen protocols.
 
